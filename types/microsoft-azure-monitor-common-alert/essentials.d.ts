@@ -6,7 +6,7 @@ export interface BaseEssentials {
   severity: "Sev0" | "Sev1" | "Sev2" | "Sev3" | "Sev4";
   monitorCondition: "Fired" | "Resolved";
   monitoringService?: string;
-  alertTargetIDs?: Array<string>;
+  alertTargetIDs?: string[];
   originAlertId?: string;
   firedDateTime?: DateString;
   resolvedDateTime?: DateString;
