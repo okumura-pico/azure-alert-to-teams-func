@@ -1,10 +1,9 @@
 {
+  "extends": "@tsconfig/node18/tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
+    "sourceMap": true,
     "outDir": "dist",
     "rootDir": ".",
-    "sourceMap": true,
-    "strict": false
+    "typeRoots": ["./types"]
   }
 }
