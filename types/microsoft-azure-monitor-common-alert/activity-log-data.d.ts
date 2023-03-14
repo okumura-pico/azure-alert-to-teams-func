@@ -1,6 +1,6 @@
 // Alert form activity log alerts
 
-import { BaseEssentials } from './essentials';
+import { BaseAlertData } from './essentials';
 import { DateString, NumberString } from './util';
 
 export interface BaseActivityLogContext {
@@ -114,10 +114,7 @@ export type ActivityLogAlertResourceHealthContext = BaseActivityLogContext & {
     };
 };
 
-export interface ActivityLogData {
-    essentials: BaseEssentials & {
-        signalType: 'Activity Log';
-    };
+export interface ActivityLogData extends BaseAlertData<"Activity Log"> {
     alertContext?:
         | ActivityLogAlertAdministrativeContext
         | ActivityLogAlertPolicyContext

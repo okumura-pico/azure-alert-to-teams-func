@@ -15,3 +15,12 @@ export interface BaseEssentials {
   alertContextVersion?: string;
   [k: string]: unknown;
 }
+
+export type SignalTypeAlias = "Activity Log" | "Log" | "Metric";
+
+export interface BaseAlertData<T extends SignalTypeAlias> {
+  essentials: BaseEssentials & {
+    signalType: T;
+  };
+  alertContext?: any;
+}

@@ -1,13 +1,14 @@
-import { ActivityLogData } from './activity-log-data';
-import { LogData } from './log-data';
-import { MetricData } from './metric-data';
+import { ActivityLogData } from "./activity-log-data";
+import { LogData } from "./log-data";
+import { MetricData } from "./metric-data";
+
+export type CommonAlertDataTypeAlias = MetricData | LogData | ActivityLogData;
 
 /**
  * Common alert definition
- * Generated from JSON schema
  */
 export interface CommonAlert {
-    schemaId?: string;
-    data: MetricData | LogData | ActivityLogData;
-    [k: string]: unknown;
+  schemaId?: string;
+  data: CommonAlertDataTypeAlias;
+  [k: string]: unknown;
 }

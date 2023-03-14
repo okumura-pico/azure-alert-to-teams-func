@@ -1,8 +1,7 @@
 // Alert for log alerts
 
-import { BaseEssentials } from './essentials';
+import { BaseAlertData } from './essentials';
 import { BaseCondition, Metric } from './metric';
-import { MetricAlertContext } from './metric-data';
 import { DateString, Dimension, NumberString, UrlString } from './util';
 
 export interface Table {
@@ -71,9 +70,6 @@ export interface LogAlertLogAlertV2Context {
     };
 }
 
-export interface LogData {
-    essentials: BaseEssentials & {
-        signalType: 'Log';
-    };
+export interface LogData extends BaseAlertData<"Log"> {
     alertContext?: LogAlertLogAnalyticsContext | LogAlertApplicationInsights | LogAlertLogAlertV2Context;
 }

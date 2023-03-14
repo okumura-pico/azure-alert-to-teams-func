@@ -1,7 +1,7 @@
 // Alert for metric alerts
 
-import { BaseEssentials } from './essentials';
-import { BaseCondition, Metric } from './metric';
+import { BaseAlertData } from "./essentials";
+import { BaseCondition, Metric } from "./metric";
 
 export interface MetricAlertContext {
     properties: { [k: string]: string };
@@ -11,9 +11,6 @@ export interface MetricAlertContext {
     };
 }
 
-export interface MetricData {
-    essentials: BaseEssentials & {
-        signalType: 'Metric';
-    };
+export interface MetricData extends BaseAlertData<"Metric"> {
     alertContext?: MetricAlertContext;
 }
