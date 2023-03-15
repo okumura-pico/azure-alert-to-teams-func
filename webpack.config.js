@@ -1,6 +1,7 @@
 const path = require("path");
 
 module.exports = {
+  mode: "production",
   target: "node",
   entry: {
     FuncAlertToTeams: path.resolve(__dirname, "FuncAlertToTeams/index.ts"),
