@@ -1,0 +1,12 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsStorage": "",
+    "TEAMS_WEBHOOK_URL": "https://contso.webhook.office.com/webhookb2/---------------",
+    "AZURE_TENANT_ID": "00000000-0000-0000-0000-000000000000",
+    "AZURE_CLIENT_ID": "00000000-0000-0000-0000-000000000000",
+    "AZURE_CLIENT_SECRET": "0000000000000000000000000000000000000000",
+    "AZURE_API_VERSION": "2022-03-01"
+  }
+}
