@@ -10,19 +10,22 @@ jobs:
   build-and-release:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-      with:
-        ref: ${{ github.ref }}
-    - uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: |
-          dist
-          FuncAlertToTeams
-          host.json
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+      - name: Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          automatic_release_tag: latest
+          prerelease: false
+          title: Latest Build
+          files: |
+            dist
+            FuncAlertToTeams
+            host.json
