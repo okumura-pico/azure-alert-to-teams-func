@@ -1,8 +1,7 @@
 name: Release package on Github
 
 on:
-  push:
-    - main
+  workflow_dispatch:
 
 env:
   NODE_VERSION: 18.x
