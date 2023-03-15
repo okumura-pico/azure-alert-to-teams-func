@@ -1,6 +1,7 @@
 .?*
 *.md
-local.settings.json
+*.ts
+local.settings*
 node_modules/
 libs/
 types/
