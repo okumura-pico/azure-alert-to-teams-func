@@ -1,7 +1,10 @@
-*.js.map
-*.ts
-.git*
-.vscode
+.?*
+*.md
 local.settings.json
-test
-getting_started.md
+node_modules/
+libs/
+types/
+test/
+package*
+tsconfig.json
+webpack.config.js
