@@ -2,7 +2,13 @@ const path = require("path");
 
 module.exports = {
   mode: "production",
+  devtool: "source-map",
   target: "node",
+  optimization: {
+    // Avoid TypeError: Expected signal to be ...
+    // See: https://github.com/node-fetch/node-fetch/issues/784
+    minimize: false,
+  },
   entry: {
     FuncAlertToTeams: path.resolve(__dirname, "FuncAlertToTeams/index.ts"),
   },
