@@ -1,7 +1,7 @@
 import * as card from "adaptivecards";
-import { genPortalUrl, ResourceDesc } from "../azure-utils";
 
-const newTableCell = (
+// テーブルセル
+export const newTableCell = (
   text: string,
   weight = card.TextWeight.Default
 ): card.TableCell => {
@@ -15,31 +15,19 @@ const newTableCell = (
   return cell;
 };
 
-export const newResourceTableRow = (resource: ResourceDesc): card.TableRow => {
-  const row = new card.TableRow();
-
-  // 1列目はAzure Portalへのリンクにします
-  row.addCell(newTableCell(`[${resource.name}](${genPortalUrl(resource)})}`));
-  row.addCell(newTableCell(resource.groupName));
-  row.addCell(newTableCell(resource.location ?? "-"));
-
-  return row;
+// テーブル列定義
+export const newColumnDefinition = (
+  physicalSize: number
+): card.TableColumnDefinition => {
+  const columnDef = new card.TableColumnDefinition();
+  columnDef.width = new card.SizeAndUnit(physicalSize, card.SizeUnit.Weight);
+  return columnDef;
 };
 
-// リソース表示用のテーブルを作成します
-export const newResourceTable = (): card.Table => {
-  const table = new card.Table();
-  table.addColumn(new card.TableColumnDefinition());
-  table.addColumn(new card.TableColumnDefinition());
-  table.addColumn(new card.TableColumnDefinition());
-
-  const headerRow = new card.TableRow();
-  headerRow.style = "Emphasis";
-  headerRow.addCell(newTableCell("名前", card.TextWeight.Bolder));
-  headerRow.addCell(newTableCell("グループ", card.TextWeight.Bolder));
-  headerRow.addCell(newTableCell("ロケーション", card.TextWeight.Bolder));
-
-  return table;
+// toJSON失敗時用
+export const fallbackPropertyBag: card.PropertyBag = {
+  type: "TextBlock",
+  text: "Serialize error.",
 };
 
 // 日時に書式を付けます

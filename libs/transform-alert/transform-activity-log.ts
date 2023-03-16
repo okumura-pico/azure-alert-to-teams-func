@@ -25,16 +25,12 @@ const extractTitle = (src: ActivityLogData): string | undefined => {
  */
 export const transformActivityLog = async (
   src: ActivityLogData
-): Promise<card.AdaptiveCard> => {
+): Promise<card.PropertyBag[]> => {
   const title = extractTitle(src);
-  const essentials = await transformEssentials(
+  const items = await transformEssentials(
     src.essentials,
     title ?? "Activity Log Alert !!"
   );
 
-  const dst = new card.AdaptiveCard();
-
-  dst.addItem(essentials);
-
-  return dst;
+  return items;
 };

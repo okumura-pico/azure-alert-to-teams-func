@@ -19,15 +19,12 @@ const extractTitle = (src: MetricData): string | undefined => {
  */
 export const transformMetric = async (
   src: MetricData
-): Promise<card.AdaptiveCard> => {
+): Promise<card.PropertyBag[]> => {
   const title = extractTitle(src);
-  const essentials = await transformEssentials(
+  const items = await transformEssentials(
     src.essentials,
     title ?? "Metric Alert !!"
   );
-  const dst = new card.AdaptiveCard();
 
-  dst.addItem(essentials);
-
-  return dst;
+  return items;
 };

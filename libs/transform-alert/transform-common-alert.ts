@@ -11,13 +11,20 @@ const transformFuncsBySignalType = {
   Metric: transformMetric,
 };
 
+interface AdaptiveCard {
+  type: "AdaptiveCard";
+  $schema: "http://adaptivecards.io/schemas/adaptive-card.json";
+  version: "1.5";
+  body: card.PropertyBag[];
+}
+
 /**
  * 共通アラートを変換
  * @param src
  */
-export const transformCommonAlert = (
+export const transformCommonAlert = async (
   src: CommonAlert
-): Promise<card.AdaptiveCard> => {
+): Promise<AdaptiveCard> => {
   const signalType = src.data.essentials.signalType;
   const transformFunc = transformFuncsBySignalType[signalType];
 
@@ -26,5 +33,12 @@ export const transformCommonAlert = (
   }
 
   // anyをやめたい
-  return transformFunc(src.data as any);
+  const body = await transformFunc(src.data as any);
+
+  return {
+    type: "AdaptiveCard",
+    $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
+    version: "1.5",
+    body,
+  };
 };

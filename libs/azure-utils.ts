@@ -1,36 +1,15 @@
-import { ResourceManagementClient } from "@azure/arm-resources";
+import { ResourceGraphClient } from "@azure/arm-resourcegraph";
+import { QueryRequest } from "@azure/arm-resourcegraph/esm/models";
 import { EnvironmentCredential } from "@azure/identity";
-
-const apiVersion = process.env.AZURE_API_VERSION;
 
 const credential = new EnvironmentCredential();
 
-const resourceIdPattern = new RegExp(
-  "^/subscriptions/(.+?)/resourcegroups/(.+?)/.*",
-  "i"
-);
-
-const parseResourceId = (
-  resourceId: string
-): { subscriptionId: string; resourceGroupName: string } => {
-  const matches = resourceId.match(resourceIdPattern);
-
-  if (!matches || matches?.length < 3) {
-    throw new Error(`Invalid resource id: ${resourceId}`);
-  }
-
-  return {
-    subscriptionId: matches[1],
-    resourceGroupName: matches[2],
-  };
-};
-
 export interface ResourceDesc {
-  tenantId?: string;
-  groupName: string;
   id: string;
-  name?: string;
-  location?: string;
+  name: string;
+  tenantId: string;
+  resourceGroup: string;
+  location: string;
 }
 
 /**
@@ -39,20 +18,19 @@ export interface ResourceDesc {
 export const getResourceById = async (
   resourceId: string
 ): Promise<ResourceDesc> => {
-  const { subscriptionId, resourceGroupName } = parseResourceId(resourceId);
-  const client = new ResourceManagementClient(credential, subscriptionId, {apiVersion});
+  const client = new ResourceGraphClient(credential);
+  const query: QueryRequest = {
+    query: `Resources | where id == '${resourceId}'`,
+  };
 
-  const resource = await client.resources.getById(
-    resourceId,
-    client.apiVersion
-  );
+  const response = await client.resources(query);
 
   return {
-    tenantId: resource.identity?.tenantId,
-    groupName: resourceGroupName,
     id: resourceId,
-    name: resource.name,
-    location: resource.location,
+    name: response.data[0]?.name,
+    tenantId: response.data[0]?.tenantId,
+    resourceGroup: response.data[0]?.resourceGroup,
+    location: response.data[0]?.location,
   };
 };
 
@@ -63,12 +41,17 @@ export const getResourceById = async (
 export const genPortalUrl = (resource: ResourceDesc): string => {
   return (
     "https://portal.azure.com/#@" +
-    encodeURIComponent(resource.tenantId!) +
+    encodeURIComponent(resource.tenantId) +
     "/resource" +
     resource.id
   );
 };
 
+/**
+ * Azure PortalへのURLを返します
+ * @param alertId
+ * @returns
+ */
 export const genAlertUrl = (alertId: string): string =>
   "https://ms.portal.azure.com/#blade/Microsoft_Azure_Monitoring/AlertDetailsTemplateBlade/alertId/" +
   encodeURIComponent(alertId);

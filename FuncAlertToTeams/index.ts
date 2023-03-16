@@ -41,7 +41,7 @@ const httpTrigger: AzureFunction = async function (
 ): Promise<void> {
   try {
     const card = await transformCommonAlert(req.body);
-    await postToTeams(card.toJSON());
+    await postToTeams(card);
 
     context.res = { status: 204 }; // No content
   } catch (err) {
