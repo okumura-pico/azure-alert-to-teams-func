@@ -1,4 +1,3 @@
-import * as card from "adaptivecards";
 import { CommonAlert } from "../../types/microsoft-azure-monitor-common-alert";
 import { transformActivityLog } from "./transform-activity-log";
 import { transformLog } from "./transform-log";
@@ -11,11 +10,12 @@ const transformFuncsBySignalType = {
   Metric: transformMetric,
 };
 
-interface AdaptiveCard {
+interface MsTeamsAdaptiveCard {
   type: "AdaptiveCard";
   $schema: "http://adaptivecards.io/schemas/adaptive-card.json";
   version: "1.5";
-  body: card.PropertyBag[];
+  msTeams: { width: string };
+  body?: any;
 }
 
 /**
@@ -24,7 +24,7 @@ interface AdaptiveCard {
  */
 export const transformCommonAlert = async (
   src: CommonAlert
-): Promise<AdaptiveCard> => {
+): Promise<MsTeamsAdaptiveCard> => {
   const signalType = src.data.essentials.signalType;
   const transformFunc = transformFuncsBySignalType[signalType];
 
@@ -39,6 +39,7 @@ export const transformCommonAlert = async (
     type: "AdaptiveCard",
     $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
     version: "1.5",
+    msTeams: { width: "full" },
     body,
   };
 };

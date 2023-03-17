@@ -15,11 +15,11 @@ import {
 import { iconFired, iconResolved } from "./config";
 
 const severities = {
-  Sev0: "Attention",
-  Sev1: "Attention",
-  Sev2: "Warning",
-  Sev3: "Accent",
-  Sev4: "Accent",
+  Sev0: "attention", // Critical
+  Sev1: "attention", // Error
+  Sev2: "warning",   // Warning
+  Sev3: "accent",    // Informational
+  Sev4: "default",   // Verbose
 };
 
 const createTopColumnSet = (src: BaseEssentials, title: string) => {
@@ -32,7 +32,7 @@ const createTopColumnSet = (src: BaseEssentials, title: string) => {
     icon = iconFired;
     time = src.firedDateTime;
   } else {
-    style = "Good";
+    style = "good";
     icon = iconResolved;
     time = src.resolvedDateTime;
   }
@@ -58,7 +58,6 @@ const createTopColumnSet = (src: BaseEssentials, title: string) => {
 
   // top column set
   const topColumnSet = new card.ColumnSet();
-  topColumnSet.bleed = true;
   topColumnSet.style = style;
   topColumnSet.addColumn(leftColumn);
   topColumnSet.addColumn(rightColumn);
@@ -70,9 +69,11 @@ const newResourceTableRow = (resource: ResourceDesc): card.TableRow => {
   const row = new card.TableRow();
 
   // 1列目はAzure Portalへのリンクにします
-  row.addCell(newTableCell(`[${resource.name}](${genPortalUrl(resource)})}`));
-  row.addCell(newTableCell(resource.resourceGroup));
-  row.addCell(newTableCell(resource.location ?? "-"));
+  row.addCell(
+    newTableCell(`[${resource.name ?? "Resource not found"}](${genPortalUrl(resource)})`)
+  );
+  row.addCell(newTableCell(resource.resourceGroup ?? "―"));
+  row.addCell(newTableCell(resource.location ?? "―"));
 
   return row;
 };
