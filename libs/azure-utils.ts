@@ -48,10 +48,14 @@ export const genPortalUrl = (resource: ResourceDesc): string => {
 };
 
 /**
- * Azure PortalへのURLを返します
+ * Azure Monitor AlertへのURLを返します
+ * @param tenantId
  * @param alertId
  * @returns
  */
-export const genAlertUrl = (alertId: string): string =>
-  "https://ms.portal.azure.com/#blade/Microsoft_Azure_Monitoring/AlertDetailsTemplateBlade/alertId/" +
+export const genAlertUrl = (tenantId: string, alertId: string): string =>
+  "https://portal.azure.com/" +
+  "#@" +
+  tenantId +
+  "/blade/Microsoft_Azure_Monitoring/AlertDetailsTemplateBlade/alertId/" +
   encodeURIComponent(alertId);

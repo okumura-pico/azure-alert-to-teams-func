@@ -14,6 +14,12 @@ import {
 } from "./adaptive-card-utils";
 import { iconFired, iconResolved } from "./config";
 
+if (!process.env["AZURE_TENANT_ID"]) {
+  throw new Error("Define `AZURE_TENANT_ID' environment variable.");
+}
+
+const tenantId = process.env["AZURE_TENANT_ID"];
+
 const severities = {
   Sev0: "attention", // Critical
   Sev1: "attention", // Error
@@ -127,7 +133,7 @@ const createResourceTable = async (
 const createLinkButton = (src: BaseEssentials) => {
   const action = new card.OpenUrlAction();
   action.title = "アラートを開く";
-  action.url = genAlertUrl(src.alertId);
+  action.url = genAlertUrl(tenantId, src.alertId);
   const actionSet = new card.ActionSet();
   actionSet.addAction(action);
 
