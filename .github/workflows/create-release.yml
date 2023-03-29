@@ -2,6 +2,9 @@ name: Release package on Github
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 env:
   NODE_VERSION: 18.x
