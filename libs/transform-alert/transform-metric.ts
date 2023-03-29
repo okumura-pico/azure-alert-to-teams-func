@@ -5,10 +5,12 @@ import { transformEssentials } from "./transform-essentials";
 
 const extractTitle = (src: MetricData): string | undefined => {
   for (const metric of src.alertContext?.condition?.allOf ?? []) {
+    const operator = metric.operator
+      ? humanizeCamelCase(metric.operator)
+      : "different than";
+
     // 先頭の要素だけ返す
-    return `${metric.metricName} is ${humanizeCamelCase(metric.operator)} ${
-      metric.threshold
-    }`;
+    return `${metric.metricName} is ${operator} ${metric.threshold}`;
   }
 };
 
