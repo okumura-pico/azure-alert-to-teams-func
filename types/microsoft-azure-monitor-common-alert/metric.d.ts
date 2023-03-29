@@ -3,7 +3,7 @@ import { DateString, Dimension } from './util';
 export interface Metric {
     metricName: string;
     metricNamespace: string | null;
-    operator: 'Equals' | 'GreaterThan' | 'GreaterThanOrEqual' | 'LessThan' | 'LessThanOrEqual';
+    operator: 'Equals' | 'GreaterThan' | 'GreaterThanOrEqual' | 'LessThan' | 'LessThanOrEqual' | null;
     threshold: string;
     timeAggregation: 'Average' | 'Total' | 'Sum' | 'Count' | 'Minimum' | 'Maximum' | string;
     dimensions: Dimension[];
