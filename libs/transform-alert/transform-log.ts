@@ -22,7 +22,10 @@ export const transformLog = async (
       // Log alert v2 schema
       for (const metric of src.alertContext.condition.allOf) {
         // 先頭の要素を使う
-        title = `${metric.metricName} is ${humanizeCamelCase(metric.operator)}`;
+        const operator = metric.operator
+          ? humanizeCamelCase(metric.operator)
+          : "different than";
+        title = `${metric.metricName} is ${operator} ${metric.threshold}`;
         linkToSearchResult = metric.linkToFilteredSearchResultsUI;
         break;
       }
