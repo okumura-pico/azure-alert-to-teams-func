@@ -35,6 +35,25 @@ const postToTeams = async (adaptiveCard: any): Promise<void> => {
   }
 };
 
+const createFallbackCard = (err: any) => ({
+  type: "AdaptiveCard",
+  $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
+  version: "1.5",
+  msTeams: { width: "full" },
+  body: [
+    {
+      type: "TextBlock",
+      text: "Common Alert transformation error.",
+      wrap: true,
+    },
+    {
+      type: "TextBlock",
+      text: JSON.stringify(err),
+      wrap: true,
+    },
+  ],
+});
+
 const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest
@@ -46,6 +65,7 @@ const httpTrigger: AzureFunction = async function (
     context.res = { status: 204 }; // No content
   } catch (err) {
     context.log(err);
+    await postToTeams(createFallbackCard(err));
     context.res = { status: 500 };
   }
 };
