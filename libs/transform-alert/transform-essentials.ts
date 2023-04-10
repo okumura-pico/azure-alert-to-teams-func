@@ -23,9 +23,9 @@ const tenantId = process.env["AZURE_TENANT_ID"];
 const severities = {
   Sev0: "attention", // Critical
   Sev1: "attention", // Error
-  Sev2: "warning",   // Warning
-  Sev3: "accent",    // Informational
-  Sev4: "default",   // Verbose
+  Sev2: "warning", // Warning
+  Sev3: "accent", // Informational
+  Sev4: "default", // Verbose
 };
 
 const createTopColumnSet = (src: BaseEssentials, title: string) => {
@@ -76,7 +76,9 @@ const newResourceTableRow = (resource: ResourceDesc): card.TableRow => {
 
   // 1列目はAzure Portalへのリンクにします
   row.addCell(
-    newTableCell(`[${resource.name ?? "Resource not found"}](${genPortalUrl(resource)})`)
+    newTableCell(
+      `[${resource.name ?? "Resource not found"}](${genPortalUrl(resource)})`
+    )
   );
   row.addCell(newTableCell(resource.resourceGroup ?? "―"));
   row.addCell(newTableCell(resource.location ?? "―"));
@@ -151,6 +153,13 @@ const createFactSet = (src: BaseEssentials) => {
   return factSet;
 };
 
+/**
+ * 共通Essential部分を変換
+ * 
+ * @param src
+ * @param title
+ * @returns
+ */
 export const transformEssentials = async (
   src: BaseEssentials,
   title: string
