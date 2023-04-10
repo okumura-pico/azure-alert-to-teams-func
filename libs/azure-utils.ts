@@ -2,6 +2,11 @@ import { ResourceGraphClient } from "@azure/arm-resourcegraph";
 import { QueryRequest } from "@azure/arm-resourcegraph/esm/models";
 import { EnvironmentCredential } from "@azure/identity";
 
+// @azure/arm-resourcegraphの認証情報
+// 以下の環境変数を使用
+// * AZURE_TENANT_ID
+// * AZURE_CLIENT_ID
+// * AZURE_CLIENT_SECRET
 const credential = new EnvironmentCredential();
 
 export interface ResourceDesc {
@@ -20,7 +25,9 @@ export const getResourceById = async (
 ): Promise<ResourceDesc> => {
   const client = new ResourceGraphClient(credential);
   const query: QueryRequest = {
-    query: `Resources | where id == '${resourceId}'`,
+    // TODO: エスケープするべきかもしれない
+    // 大文字小文字を区別しない
+    query: `Resources | where id =~ '${resourceId}'`,
   };
 
   const response = await client.resources(query);
