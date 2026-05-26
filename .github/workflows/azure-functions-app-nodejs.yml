@@ -32,16 +32,16 @@ on:
       node-version:
         description: Node version
         required: true
-        default: 18.x
+        default: 24.x
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         ref: ${{ github.ref }}
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version: ${{ github.event.inputs.node-version }}
         cache: 'npm'
