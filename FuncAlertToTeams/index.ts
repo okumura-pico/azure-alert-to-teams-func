@@ -1,5 +1,6 @@
-import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import { HttpHandler, HttpRequest, InvocationContext, HttpResponseInit } from "@azure/functions";
 import fetch, { RequestInit } from "node-fetch";
+import { CommonAlert } from "../types/microsoft-azure-monitor-common-alert";
 import { transformCommonAlert } from "../libs/transform-alert/transform-common-alert";
 
 const makeMessage = (adaptiveCard: any): any => ({
@@ -30,7 +31,7 @@ const postToTeams = async (adaptiveCard: any): Promise<void> => {
   const response = await fetch(process.env.TEAMS_WEBHOOK_URL, requestInit);
 
   if (response.status !== 200) {
-    const body = response.body.read();
+    const body = await response.text();
     throw new Error("Cannot post to Teams. " + body);
   }
 };
@@ -61,23 +62,23 @@ const createFallbackCard = (err: any, body: any) => ({
 
 /**
  * Entry point
- * @param context
- * @param req
  */
-const httpTrigger: AzureFunction = async function (
-  context: Context,
-  req: HttpRequest
-): Promise<void> {
+const httpTrigger: HttpHandler = async (
+  req: HttpRequest,
+  context: InvocationContext
+): Promise<HttpResponseInit> => {
+  const rawBody = await req.text();
   try {
-    const card = await transformCommonAlert(req.body);
+    const parsed = JSON.parse(rawBody) as CommonAlert;
+    const card = await transformCommonAlert(parsed);
     await postToTeams(card);
 
-    context.res = { status: 204 }; // No content
+    return { status: 204 };
   } catch (err) {
     context.log(err);
-    await postToTeams(createFallbackCard(err, req.body));
+    await postToTeams(createFallbackCard(err, rawBody));
 
-    context.res = { status: 500 };
+    return { status: 500 };
   }
 };
 
